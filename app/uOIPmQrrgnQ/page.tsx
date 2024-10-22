@@ -22,17 +22,28 @@ const AboutPage = () => {
             document.head.appendChild(newMetaDescription);
         }
 
-        // Update or create Open Graph image meta tag
-        const metaImage = document.querySelector('meta[property="og:image"]');
+        // Update or create Open Graph meta tags
         const imageUrl = 'https://img.youtube.com/vi/' + `${lastPart}` + '/0.jpg'; // Replace with your image URL
-        if (metaImage) {
-            metaImage.setAttribute('content', imageUrl);
-        } else {
-            const newMetaImage = document.createElement('meta');
-            newMetaImage.setAttribute('property', 'og:image');
-            newMetaImage.content = imageUrl;
-            document.head.appendChild(newMetaImage);
-        }
+
+        const metaTags = [
+            { property: 'og:title', content: `About - ${lastPart}` },
+            { property: 'og:description', content: `This is the about page for ${lastPart}.` },
+            { property: 'og:image', content: imageUrl },
+            { property: 'og:url', content: window.location.href },
+            { property: 'og:type', content: 'website' } // Optional, specify the type of content
+        ];
+
+        metaTags.forEach(({ property, content }) => {
+            const metaTag = document.querySelector(`meta[property="${property}"]`);
+            if (metaTag) {
+                metaTag.setAttribute('content', content);
+            } else {
+                const newMetaTag = document.createElement('meta');
+                newMetaTag.setAttribute('property', property);
+                newMetaTag.content = content;
+                document.head.appendChild(newMetaTag);
+            }
+        });
     }, []);
 
     return (
